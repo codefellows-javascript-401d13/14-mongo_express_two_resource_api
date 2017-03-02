@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dkulp23/14-mongo_express_two_resource_api#readme",
   "dependencies": {
     "bluebird": "^3.4.7",
+    "body-parser": "^1.17.0",
     "cors": "^2.8.1",
     "debug": "^2.6.1",
     "express": "^4.15.0",

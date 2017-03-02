@@ -2,15 +2,15 @@
 
 const debug = require('debug')('peak:mountains');
 const mongoose = require('mongoose');
-const Schema = require('mongoose').Schema;
+const Schema = mongoose.Schema;
 const createError = require('http-errors');
 
 const Peak = require('./peak.js');
 
 const mountainsSchema = Schema({
   name: { type: String, required: true },
-  timestamp: new Date(),
-  peaks: [{ type: Schema.Types.ObjectID, ref: 'peak' }]
+  timestamp: { type: Date, required: true },
+  peaks: [{ type: Schema.Types.ObjectId, ref: 'peak' }]
 });
 
 const Mountains = module.exports = mongoose.model('mountains', mountainsSchema);

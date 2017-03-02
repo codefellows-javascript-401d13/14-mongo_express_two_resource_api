@@ -7,7 +7,7 @@ const Router = require('express').Router;
 
 const mountainsRouter = module.exports = new Router();
 
-mountainsRouter.get('/api/mountains/:id', parseJSON, function(req, res, next) { //retrieve apeak
+mountainsRouter.get('/api/mountains/:id', function(req, res, next) { //retrieve apeak
   debug('GET: /api/mountains/:id');
   Mountains.findById(req.params.id)
     .populate('peaks') //this puts all the the peak bodies into the peaks array property of Mountains... I think
@@ -15,10 +15,10 @@ mountainsRouter.get('/api/mountains/:id', parseJSON, function(req, res, next) { 
     .then(mountains => res.json(mountains)); //return the peak because it's a get method! they asked for it!
 });
 
-mountainsRouter.post('/api/mountains', function(req, res, next) { //create a new Mountains object
+mountainsRouter.post('/api/mountains', parseJSON, function(req, res, next) { //create a new Mountains object
   debug('POST: /api/mountains');
   req.body.timestamp = new Date();
-  new Mountains(req.body)
+  new Mountains(req.body).save()
     .catch(next)
     .then(mountains => res.json(mountains));
 });

@@ -2,13 +2,13 @@
   "name": "lab-dana",
   "version": "1.0.0",
   "description": "![CF](https://camo.githubusercontent.com/70edab54bba80edb7493cad3135e9606781cbb6b/687474703a2f2f692e696d6775722e636f6d2f377635415363382e706e67) Lab 14 - Mongo & Express Two Resource API ===",
-  "main": "gulpfile.js",
+  "main": "server.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "DEBUG='card*' ./node_modules/mocha/bin/mocha",
+    "start": "DEBUG='card*' node server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dkulp23/14-mongo_express_two_resource_api#readme",
   "dependencies": {
     "bluebird": "^3.4.7",
+    "cors": "^2.8.1",
     "debug": "^2.6.1",
     "express": "^4.15.0",
     "http-errors": "^1.6.1",

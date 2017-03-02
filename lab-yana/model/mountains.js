@@ -26,8 +26,8 @@ Mountains.findByIdAndAddPeak = function(id, peak) { //static method that takes i
     .then(peak => {
       this.tempMountains.peaks.push(peak._id); // puts the peak ID into array in Mountains
       this.tempPeak = peak; //saves a temp copy of the peak
-      return this.tempMountains.save() //database updated with new peak info!
+      return this.tempMountains.save(); //database updated with new peak info!
     })
-    .then( () => { return this.tempPeak} ) //returns peak value to original function
-    .catch(next);
+    .then( () => { return this.tempPeak; } ) //returns peak value to original function
+    .catch(err => Promise.reject(createError(404, err.message)));
 };

@@ -3,7 +3,8 @@
 const debug = require('debug')('peak:error-middleware');
 const createError = require('http-errors');
 
-module.exports = function() {
+module.exports = function(err, req, res, next) {
+  debug('error-middleware');
   console.error(`msg: ${err.message}`);
   console.error(`name: ${err.name}`);
 
@@ -29,4 +30,4 @@ module.exports = function() {
 
   err = createError(500, err.message); //if we don't hit any of the above, send a 500 internal server error to signify that we don't know what the fuck is wrong
   res.status(err.status).send(err.message);
-}
+};

@@ -11,7 +11,7 @@ const cardSchema = Schema({
   brand: { type: String, required: true},
   completeSet: { type: Boolean, required: true},
   single: {type: Boolean, required: true},
-  baseball: [{ type: Schema.Types.ObjectId, ref: 'baseball'}]
+  baseballArr: [{ type: Schema.Types.ObjectId, ref: 'baseball'}]
 });
 
 const Card = module.exports = mongoose.model('card', cardSchema);
@@ -27,7 +27,7 @@ Card.findByIdAndAddBaseball = function(id, baseball) {
     return new Baseball(baseball).save();
   })
   .then( _baseball => {
-    this.tempCard.baseball.push(_baseball._id);
+    this.tempCard.baseballArr.push(_baseball._id);
     this.tempBaseball = _baseball;
     return this.tempCard.save();
   })

@@ -8,9 +8,9 @@ const Schema = mongoose.Schema;
 const Employee = require('./employee.js');
 
 const storeSchema = Schema({
-  name: { type: String, required: true)},
+  name: { type: String, required: true},
   timestamp: { type: Date, required: true},
-  employees: [{ type: Scema.Types.ObjectId, ref: 'employee'}]
+  employees: [{ type: Schema.Types.ObjectId, ref: 'employee'}]
 });
 
 const Store = module.exports = mongoose.model('store', storeSchema);

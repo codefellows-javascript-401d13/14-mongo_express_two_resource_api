@@ -11,7 +11,7 @@ storeRouter.post('/api/store', jsonParser, function(req, res, next) {
   req.body.timestamp = new Date();
   new Store(req.body).save()
   .then( store => res.json(store))
-  .catch(next();)
+  .catch(next());
 });
 
 storeRouter.get('/api/store/:id', function(req, re, next) {
@@ -31,7 +31,7 @@ storeRouter.put('/api/store/:id', jsonParser, function(req, res, next) {
   });
 });
 
-storeRouter.delete('/api/store/:id' function(req, res, next) {
+storeRouter.delete('/api/store/:id', function(req, res, next) {
   Store.findByIdAndRemove(req.params.id)
   .then( () => res.status(204).send() )
   .catch( err => next(createError(404, err.message)) );

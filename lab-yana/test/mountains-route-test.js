@@ -141,5 +141,48 @@ describe('Mountains Routes', function() {
         });
       });
     });
+    describe('with an invalid body', () => {
+      it('should return a 400 bad request', done => {
+        request.put(`${url}/api/mountains/${this.tempMountains._id}`)
+        .end(res => {
+          expect(this.tempMountains.name).to.equal(testMountains.name);
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+  });
+  describe('DELETE /api/mountains/:id', function() {
+    describe('with a valid id', () => {
+      before(done => {
+        new Mountains(testMountains).save()
+        .then(mountains => {
+          this.tempMountains = mountains;
+          return Mountains.findByIdAndAddPeak(mountains._id, testPeak)
+        })
+        .then(peak => {
+          this.tempPeak = peak;
+          done();
+        })
+        .catch(done);
+      });
+      it('should return a status of 204', done => {
+        request.delete(`${url}/api/mountains/${this.tempMountains._id}`)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+    describe('with an invalid id', () => {
+      it('should return a 404 not found', done => {
+        request.delete(`${url}/api/mountains/n0tac0rrectid`)
+        .end(res => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
   });
 });

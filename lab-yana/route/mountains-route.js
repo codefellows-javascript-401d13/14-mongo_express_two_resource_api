@@ -4,6 +4,7 @@ const debug = require('debug')('peak:mountains-route');
 const parseJSON = require('body-parser').json();
 const Mountains = require('../model/mountains.js');
 const Router = require('express').Router;
+const createError = require('http-errors');
 
 const mountainsRouter = module.exports = new Router();
 
@@ -25,14 +26,18 @@ mountainsRouter.post('/api/mountains', parseJSON, function(req, res, next) { //c
 
 mountainsRouter.put('/api/mountains/:id', parseJSON, function(req, res, next) { //updates info of a PEAK in Mountains
   debug('PUT: /api/mountains/:id');
+  if (req._body !== true) var invalidBody = true;
   Mountains.findByIdAndUpdate(req.params.id, req.body, { new: true } )//new property determines whether the new info is displayed
-  .catch(next)
-  .then(peak => res.json(peak));
+  .then(peak => {
+    if (invalidBody) return Promise.reject(createError(400, 'bad request'));
+    res.json(peak);
+  })
+  .catch(next);
 });
 
 mountainsRouter.delete('/api/mountains/:id', function(req, res, next) { //removes Mountains
   debug('DELETE: /api/mountains/:id');
   Mountains.findByIdAndRemove(req.params.id)
-  .catch(next)
-  .then( () => res.status(204).send());
+  .then( () => res.status(204).send())
+  .catch(next);
 });

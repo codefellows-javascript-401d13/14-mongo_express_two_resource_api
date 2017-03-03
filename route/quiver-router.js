@@ -19,7 +19,7 @@ quiverRouter.post('/api/quiver', jsonParser, function(req, res, next) {
 
 quiverRouter.get('/api/quiver/:id', function(req, res, next) {
   debug('GET: /api/quiver/:id');
-
+  
   try {
     Quiver.findById(req.params.id)
     .populate('guitars')

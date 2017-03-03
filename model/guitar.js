@@ -7,6 +7,7 @@ const guitarSchema = Schema({
   name: { type: String, required: true},
   type: { type: String, required: true},
   make: { type: String, required: true},
+  timestamp: { type: Date, required: true},
   quiverID: [{ type: Schema.Types.ObjectId, req: true}]
 });
 

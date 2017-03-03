@@ -19,16 +19,32 @@ Quiver.findByIdAndAddGuitar = function(id, _guitar) {
   debug('findByIdAndAddGuitar');
 
   return Quiver.findById(id)
-  .catch( err => Promise.reject(createError(404, err.message)))
+  .catch( err => createError(404, err.message))
   .then( quiver => {
     _guitar.quiverID = quiver._id;
+    _guitar.timestamp = new Date();
     this.tempQuiver = quiver;
     return new Guitar(_guitar).save();
   })
   .then( guitar => {
-    this.tempQuiver.guitars.push(guitar._id);
     this.tempGuitar = guitar;
+    this.tempQuiver.guitars.push(guitar._id);
     return this.tempQuiver.save();
   })
-  .then( () => this.tempGuitar);
+  .then( () => {
+    return this.tempGuitar;
+  });
+};
+
+Quiver.findByIdAndReturnGuitar = function(quiverID, reqParamGuitarID) {
+  debug('findByIdAndReturnGuitar');
+
+  return Quiver.findById(quiverID)
+  .populate('guitars')
+  .catch( err => err(createError(404, err.message)))
+  .then( quiver => {
+    quiver.guitars.forEach( g => {
+      if(g._id === reqParamGuitarID) return g;
+    });
+  });
 };

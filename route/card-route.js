@@ -15,3 +15,17 @@ cardRouter.post('/api/card', jsonParser, function(req, res, next) {
   .then( card => res.json(card))
   .catch(next);
 });
+
+cardRouter.get('/api/card/:id', function(req, res, next) {
+  debug('GET /api/card/:id');
+
+  Card.findById(req.params.id)
+  .populate('baseballArr')
+  .then( card => res.json(card))
+  .catch( err => next(createError(404, err.message)));
+});
+
+// .catch( err => {
+//   if (err.name === 'ValidationError') return next(err);
+//   next(createError(404, err.message));
+// });

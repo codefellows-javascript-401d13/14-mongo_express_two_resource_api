@@ -77,8 +77,8 @@ describe('Card Routes', function() {
           if (err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body.brand).to.equal(sampleCard.brand);
-          expect(res.body.baseball.length).to.equal(1);
-          expect(res.body.baseball[0].year).to.equal(sampleBaseball.year);
+          expect(res.body.baseballArr.length).to.equal(1);
+          expect(res.body.baseballArr[0].year).to.equal(sampleBaseball.year);
           done();
         });
       });

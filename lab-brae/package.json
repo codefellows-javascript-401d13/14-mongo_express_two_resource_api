@@ -1,0 +1,38 @@
+{
+  "name": "14-mongo_express_two_resource_api",
+  "version": "1.0.0",
+  "description": "![CF](https://camo.githubusercontent.com/70edab54bba80edb7493cad3135e9606781cbb6b/687474703a2f2f692e696d6775722e636f6d2f377635415363382e706e67) Lab 14 - Mongo & Express Two Resource API\r ===",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "DEBUG='videogame*' ./node_modules/mocha/bin/mocha",
+    "start": "DEBUG='videogame*' node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0blu3/14-mongo_express_two_resource_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0blu3/14-mongo_express_two_resource_api/issues"
+  },
+  "homepage": "https://github.com/0blu3/14-mongo_express_two_resource_api#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.17.0",
+    "cors": "^2.8.1",
+    "debug": "^2.6.1",
+    "express": "^4.15.0",
+    "mongoose": "^4.8.5",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "superagent": "^3.5.0"
+  }
+}

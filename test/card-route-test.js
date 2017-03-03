@@ -123,4 +123,37 @@ describe('Card Routes', function() {
       });
     });
   });
+
+  describe('DELETE: /api/card/:id', function() {
+    describe('with a valid id', function() {
+      before( done => {
+        new Card(sampleCard).save()
+        .then( card => {
+          this.tempCard = card;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempCard) {
+          Card.remove({})
+          .then( () => done())
+          .catch(done);
+        }
+        done();
+      });
+
+      it('should return the deleted card', done => {
+        request.delete(`${url}/api/card/${this.tempCard._id}`)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.brand).to.equal(sampleCard.brand);
+          expect(res.body.completeSet).to.not.be.true;
+          done();
+        });
+      });
+    });
+  });
 });

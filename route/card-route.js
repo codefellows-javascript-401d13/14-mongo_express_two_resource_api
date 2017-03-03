@@ -35,3 +35,11 @@ cardRouter.put('/api/card/:id', jsonParser, function(req, res, next) {
     next(createError(404, err.message));
   });
 });
+
+cardRouter.delete('/api/card/:id', function(req, res, next) {
+  debug('DELETE /api/card/:id');
+
+  Card.findByIdAndRemove(req.params.id)
+  .then( card => res.json(card))
+  .catch( err => next(createError(404, err.message)));
+});

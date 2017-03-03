@@ -49,3 +49,7 @@ cardRouter.delete('/api/card/:id', function(req, res, next) {
   .then( card => res.json(card))
   .catch( err => next(createError(404, err.message)));
 });
+
+cardRouter.get('/api/card', function(req, res, next) {
+  next(createError(400, 'No ID Provided'));
+});

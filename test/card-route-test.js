@@ -120,6 +120,16 @@ describe('Card Routes', function() {
         });
       });
     });
+
+    describe('with no id provided', function() {
+      it('should return a 400 error', function(done) {
+        request.get(`${url}/api/card`)
+        .end((err, res) => {
+          expect(err.status).to.equal(400);
+          done();
+        });
+      });
+    });
   });
 
   describe('PUT: /api/card/:id', function() {

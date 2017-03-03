@@ -12,16 +12,16 @@ mountainsRouter.get('/api/mountains/:id', function(req, res, next) { //retrieve 
   debug('GET: /api/mountains/:id');
   Mountains.findById(req.params.id)
     .populate('peaks') //this puts all the the peak bodies into the peaks array property of Mountains... I think
-    .catch(next)
-    .then(mountains => res.json(mountains)); //return the peak because it's a get method! they asked for it!
+    .then(mountains => res.json(mountains)) //return list of peaks because it's a get method! they asked for it!
+    .catch(next);
 });
 
 mountainsRouter.post('/api/mountains', parseJSON, function(req, res, next) { //create a new Mountains object
   debug('POST: /api/mountains');
   req.body.timestamp = new Date();
   new Mountains(req.body).save()
-    .catch(next)
-    .then(mountains => res.json(mountains));
+    .then(mountains => res.json(mountains))
+    .catch(next);
 });
 
 mountainsRouter.put('/api/mountains/:id', parseJSON, function(req, res, next) { //updates info of a PEAK in Mountains

@@ -4,6 +4,7 @@ const debug = require('debug')('streetz:squad');
 const createError = require('http-errors');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+
 mongoose.Promise = Promise;
 const Schema = mongoose.Schema;
 const Playa = require('./playa.js');

@@ -2,6 +2,7 @@
 
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+
 mongoose.Promise = Promise;
 const Schema = mongoose.Schema;
 

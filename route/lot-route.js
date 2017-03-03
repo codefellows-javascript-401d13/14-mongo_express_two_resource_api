@@ -3,11 +3,12 @@
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
 const createError = require('http-errors');
-
+const debug = require('debug')('car:lot-router');
 const Lot = require('../model/lot.js');
 const lotRouter = module.exports = new Router();
 
 lotRouter.post('/api/lot', jsonParser, function(req, res, next) {
+  
   req.body.timestamp = new Date();
   new Lot(req.body).save()
   .then( lot => res.json(lot))

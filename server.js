@@ -22,7 +22,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use(cardRouter);
-// app.use(baseballRouter);
+app.use(baseballRouter);
 app.use(errors);
 
 app.listen(PORT, () => {

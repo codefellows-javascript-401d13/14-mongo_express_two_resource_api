@@ -45,6 +45,19 @@ describe('Card Routes', function() {
         });
       });
     });
+
+    describe('with an invalid body', function() {
+      it('should return a 400 error', function(done) {
+        let falseSample = { dog: 'cat', beer: 'good'};
+        request.post(`${url}/api/card`)
+        .send(falseSample)
+        .end((err, res) => {
+          expect(err.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
   });
 
   describe('GET: /api/card:id', function() {

@@ -9,4 +9,8 @@ const baseballSchema = Schema({
   cardId: { type: Schema.Types.ObjectId, required: true }
 });
 
+baseballSchema.pre('remove', function(next) {
+  this.model('card').remove({ baseballArr: this._id }, next);
+});
+
 module.exports = mongoose.model('baseball', baseballSchema);

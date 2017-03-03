@@ -13,7 +13,10 @@ cardRouter.post('/api/card', jsonParser, function(req, res, next) {
 
   new Card(req.body).save()
   .then( card => res.json(card))
-  .catch(next);
+  .catch( err => {
+    if ( err.name === 'ValidationError') return next(err);
+    next(createError(404, err.message));
+  });
 });
 
 cardRouter.get('/api/card/:id', function(req, res, next) {

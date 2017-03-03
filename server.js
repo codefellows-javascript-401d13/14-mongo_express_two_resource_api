@@ -15,14 +15,14 @@ const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/baseballcarddb';
 
 mongoose.Promise = Promise;
-mongoose.use(MONGODB_URI);
+mongoose.connect(MONGODB_URI);
 
 const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 
 app.use(cardRouter);
-app.use(baseballRouter);
+// app.use(baseballRouter);
 app.use(errors);
 
 app.listen(PORT, () => {

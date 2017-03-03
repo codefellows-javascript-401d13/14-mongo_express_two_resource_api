@@ -34,7 +34,7 @@ describe('Card Routes', function() {
       });
 
       it('should return a list', done => {
-        request.post(`${url}/api/list`)
+        request.post(`${url}/api/card`)
         .send(sampleCard)
         .end((err, res) => {
           if (err) return done(err);

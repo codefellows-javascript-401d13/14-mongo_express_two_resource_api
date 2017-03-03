@@ -67,6 +67,7 @@ describe('Card Routes', function() {
           Card.remove({})
           .then( () => done())
           .catch(done);
+          return;
         }
         done();
       });
@@ -79,6 +80,44 @@ describe('Card Routes', function() {
           expect(res.body.brand).to.equal(sampleCard.brand);
           expect(res.body.baseballArr.length).to.equal(1);
           expect(res.body.baseballArr[0].year).to.equal(sampleBaseball.year);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('PUT: /api/card/:id', function() {
+    describe('with a valid body', function() {
+      before( done => {
+        new Card(sampleCard).save()
+        .then( card => {
+          this.tempCard = card;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempCard) {
+          Card.remove({})
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('should return an updated card', done => {
+        let updated = { brand: 'Donruss' };
+
+        request.put(`${url}/api/card/${this.tempCard._id}`)
+        .send(updated)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.brand).to.equal(updated.brand);
+          expect(res.body.single).to.be.true;
+          expect(res.body._id).to.equal(this.tempCard._id.toString());
           done();
         });
       });

@@ -25,7 +25,13 @@ cardRouter.get('/api/card/:id', function(req, res, next) {
   .catch( err => next(createError(404, err.message)));
 });
 
-// .catch( err => {
-//   if (err.name === 'ValidationError') return next(err);
-//   next(createError(404, err.message));
-// });
+cardRouter.put('/api/card/:id', jsonParser, function(req, res, next) {
+  debug('PUT /api/card/:id');
+
+  Card.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  .then( card => res.json(card))
+  .catch( err => {
+    if (err.name === 'ValidationError') return next(err);
+    next(createError(404, err.message));
+  });
+});

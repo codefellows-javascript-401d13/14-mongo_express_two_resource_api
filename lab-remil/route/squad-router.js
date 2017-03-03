@@ -31,3 +31,14 @@ squadRouter.put('/api/squad/:id', jsonParser, function(req, res, next) {
   .then( squad => res.json(squad))
   .catch(next);
 });
+
+squadRouter.delete('/api/squad/:id', function(req, res, next) {
+  debug('DELETE: /api/squad/:id');
+
+  Squad.findByIdAndRemove(req.params.id)
+  .then( squad => {
+    console.log('deleted squad:', squad);
+    res.sendStatus(204);
+  })
+  .catch(next);
+});

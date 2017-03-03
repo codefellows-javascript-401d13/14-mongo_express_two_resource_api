@@ -133,4 +133,43 @@ describe('Squad Rizzoutes', function() {
       });
     });
   });
+
+  describe('runnin\' a DELETE route @ /api/squad/:id', function() {
+    describe('with dat good id', function() {
+      before( done => {
+        new Squad(bsquad).save()
+        .then( squad => {
+          this.tempSquad = squad;
+          return Squad.findByIdAndAddPlaya(squad._id, bplaya);
+        })
+        .then( playa => {
+          this.tempPlaya = playa;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempSquad) {
+          Promise.all([
+            Squad.remove({}),
+            Playa.remove({}),
+          ])
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('betta return a 204', done => {
+        request.delete(`${url}/api/squad/${this.tempSquad._id}`)
+        .end((err, res) => {
+          if (err) done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+  });
 });

@@ -23,7 +23,7 @@ guitarRouter.get('/api/quiver/:quiverID/guitar/:guitarID', function(req, res, ne
   debug('GET: /api/quiver/:quiverID/guitar/:guitarID');
 
   try {
-    Quiver.findByIdAndReturnGuitar(req.params.quiverID, req.params.guitarID)
+    Guitar.findById(req.params.guitarID)
     .then( guitar => res.json(guitar))
     .catch( () => next(createError(404, 'not found')));
   } catch (err) {
@@ -35,14 +35,8 @@ guitarRouter.put('/api/quiver/:quiverID/guitar/:guitarID', jsonParser, function(
   debug('PUT: /api/quiver/:quiverID/guitar/:guitarID');
 
   try {
-    Quiver.findByIdAndReturnGuitar(req.params.quiverID, req.params.guitarID)
-    .then( guitar => {
-      if( guitar._id === req.params.guitarID) {
-        Guitar.findByIdAndUpdate(guitar._id, req.params.body, { new: true })
-        .then( guitar => res.json(guitar))
-        .catch( () => next(createError(404, 'not found')));
-      }
-    })
+    Guitar.findByIdAndUpdate(req.params.guitarID, req.params.body, {new: true})
+    .then( guitar => res.json(guitar))
     .catch( () => next(createError(404, 'not found')));
   } catch (err) {
     next(createError(400, err.message));
@@ -53,17 +47,10 @@ guitarRouter.delete('/api/quiver/:quiverID/guitar/:guitarID', function(req, res,
   debug('DELETE: /api/quiver/:quiverID/guitar/:guitarID');
 
   try {
-    Quiver.findByIdAndReturnGuitar(req.params.quiverID, req.params.guitarID)
-    .then( guitar => {
-      if( guitar._id === req.params.guitarID) {
-        Guitar.findByIdAndRemove(guitar._id)
-        .then( () => res.status(204).send('no content'))
-        .catch( () => next(createError(404, 'not found')));
-      }
-    })
+    Guitar.findByIdAndRemove(req.params.guitarID)
+    .then( () => res.status(204).send('no content'))
     .catch( () => next(createError(404, 'not found')));
-  }
-  catch (err) {
+  } catch (err) {
     next(createError(400, err.message));
   }
 });

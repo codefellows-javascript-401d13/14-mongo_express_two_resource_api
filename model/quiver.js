@@ -35,16 +35,3 @@ Quiver.findByIdAndAddGuitar = function(id, _guitar) {
     return this.tempGuitar;
   });
 };
-
-Quiver.findByIdAndReturnGuitar = function(quiverID, reqParamGuitarID) {
-  debug('findByIdAndReturnGuitar');
-
-  return Quiver.findById(quiverID)
-  .populate('guitars')
-  .catch( err => err(createError(404, err.message)))
-  .then( quiver => {
-    quiver.guitars.forEach( g => {
-      if(g._id === reqParamGuitarID) return g;
-    });
-  });
-};

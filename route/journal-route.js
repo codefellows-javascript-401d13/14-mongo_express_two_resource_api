@@ -14,7 +14,7 @@ journalRouter.post('/api/library/:libraryID/journal', jsonParser, function(req, 
   .catch(err => next(createError(404, err.message)));
 });
 
-journalRouter.get('/api/library/journal', function(req, res, next){
+journalRouter.get('/api/journal/:id', function(req, res, next){
   Journal.findById(req.params.id)
   .then(journal => res.json(journal))
   .catch(err => next(createError(404, err.message)));

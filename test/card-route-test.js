@@ -58,6 +58,17 @@ describe('Card Routes', function() {
         });
       });
     });
+
+    describe('with no req body', function() {
+      it('should return a 400 error', function(done) {
+        request.post(`${url}/api/card`)
+        .end((err, res) => {
+          expect(err.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
   });
 
   describe('GET: /api/card:id', function() {
@@ -93,6 +104,18 @@ describe('Card Routes', function() {
           expect(res.body.brand).to.equal(sampleCard.brand);
           expect(res.body.baseballArr.length).to.equal(1);
           expect(res.body.baseballArr[0].year).to.equal(sampleBaseball.year);
+          done();
+        });
+      });
+    });
+
+    describe('with an invalid id', function() {
+      it('should return a 404 error', function(done) {
+        let testId = '111222333444555666777888';
+        request.get(`${url}/api/card/${testId}`)
+        .end((err, res) => {
+          expect(err.status).to.equal(404);
+          expect(res.status).to.equal(err.status);
           done();
         });
       });

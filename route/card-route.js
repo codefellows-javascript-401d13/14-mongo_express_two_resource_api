@@ -24,7 +24,10 @@ cardRouter.get('/api/card/:id', function(req, res, next) {
 
   Card.findById(req.params.id)
   .populate('baseballArr')
-  .then( card => res.json(card))
+  .then( card => {
+    if (!card) return next(createError(404, 'Not Found'));
+    res.json(card);
+  })
   .catch( err => next(createError(404, err.message)));
 });
 

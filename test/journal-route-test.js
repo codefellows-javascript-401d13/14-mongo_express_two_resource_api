@@ -47,14 +47,77 @@ describe('Journal Routes', function(){
         .send(exampleJournal)
         .end((err, res) => {
           if (err) return done(err);
+          expect(res.status).to.equal(200);
           expect(res.body.title).to.equal(exampleJournal.title);
           expect(res.body.entry).to.equal(exampleJournal.entry);
           expect(res.body.libraryID).to.equal(this.tempLibrary._id.toString());
           done();
         });
       });
+
+      describe('POST: /api/journal', function(){
+        describe('with an invalid body or none provided', function(){
+          it('should return a 400 error', done =>{
+            request.post(`${url}/api/library`)
+            .send('justthisstring')
+            .set('Content-Type', 'application/json')
+            .end((err, res)=> {
+              expect(res.status).to.equal(400);
+              done();
+            });
+          });
+        });
+      });
     });
   });
 
-   //GET TESTS HERE//
+  describe('GET: api/journal', function(){
+    describe('with a valid body', function(){
+      before( done => {
+        exampleLibrary.timestamp = new Date();
+        new Library(exampleLibrary).save()
+        .then( library => {
+          this.tempLibrary = library;
+          return Library.findByIdAndAddJournal(library._id, exampleJournal);
+        })
+        .then( journal => {
+          this.tempJournal = journal;
+          done();
+        })
+        .catch(done);
+      });
+      after( done => {
+        Promise.all([
+          Library.remove({}),
+          Journal.remove({})
+        ])
+        .then(() => done())
+        .catch(done);
+      });
+      it('should return a journal', done => {
+        request.get(`${url}/api/journal/${this.tempJournal._id}`)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.title).to.equal('test journal title');
+          expect(res.body.entry).to.equal('test journal entry');
+          expect(res.body.library.length).to.equal(1);
+          expect(res.body.library[0].name).to.equal(exampleLibrary.name);
+          done();
+        });
+      });
+
+      describe('GET: /api/journal', function(){
+        describe('with an invalid id', function(){
+          it('should return a 404 error', done => {
+            request.get(`${url}/api/journal/123456`)
+            .end((err, res)=>{
+              expect(res.status).to.equal(404);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
 });

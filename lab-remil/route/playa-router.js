@@ -23,3 +23,11 @@ playaRouter.get('/api/playa/:id', function(req, res, next) {
   .then( playa => res.json(playa))
   .catch(next);
 });
+
+playaRouter.put('/api/playa/:id', jsonParser, function(req, res, next) {
+  debug('PUT: /api/playa/:id');
+
+  Playa.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  .then( playa => res.json(playa))
+  .catch(next);
+});

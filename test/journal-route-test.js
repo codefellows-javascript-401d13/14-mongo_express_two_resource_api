@@ -55,4 +55,6 @@ describe('Journal Routes', function(){
       });
     });
   });
+
+   //GET TESTS HERE//
 });

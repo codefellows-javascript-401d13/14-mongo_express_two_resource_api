@@ -3,7 +3,6 @@
 const expect = require('chai').expect;
 const request = require('superagent');
 const Library = require('../model/library.js');
-const Journal = require('../model/journal.js');
 
 const PORT = process.env.PORT || 3000;
 
@@ -34,7 +33,7 @@ describe('Library Routes', function(){
         done();
       });
 
-      it('should return a list', done => {
+      it('should return a library', done => {
         request.post(`${url}/api/library`)
         .send(exampleLibrary)
         .end((err, res) => {
@@ -45,9 +44,24 @@ describe('Library Routes', function(){
           done();
         });
       });
+
+      describe('POST: /api/library', function(){
+        describe('with an invalid body or none provided', function() {
+          it('should return a 400 error', done => {
+            request.post(`${url}/api/library`)
+          .send('randomstring')
+          .set('Content-Type', 'application/json')
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          });
+          });
+        });
+      });
     });
   });
 
+//GET TESTS BELOW
   describe('GET: /api/library/:id', function(){
     describe('with a valid body', function(){
       before( done => {
@@ -84,9 +98,23 @@ describe('Library Routes', function(){
           done();
         });
       });
+
+      describe('GET: /api/library/:id', function () {
+        describe('with a invalid id', function() {
+          it('should return a 404 error', done => {
+            request.get(`${url}/api/library/12345`)
+            .end((err, res) => {
+              expect(res.status).to.equal(404);
+              done();
+            });
+          });
+        });
+      });
     });
   });
 
+
+ //PUT TESTS BELOW
   describe('PUT: /api/library/:id', function(){
     describe('with a valid body', function(){
       before ( done => {
@@ -118,6 +146,27 @@ describe('Library Routes', function(){
           expect(res.status).to.equal(200);
           expect(res.body.name).to.equal(updated.name);
           expect(timestamp.toString()).to.equal(exampleLibrary.timestamp.toString());
+          done();
+        });
+      });
+
+      it('should return a 400 error', done => {
+        let updated = 'strinnngy';
+        request.put(`${url}/api/library/${this.tempLibrary._id}`)
+        .set('Content-Type', 'application/json')
+        .send(updated)
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+
+      it('should return a 404 error', done => {
+        let updated = 'whatever  this is';
+        request.put(`${url}/api/library/${this.tempLibrary.what}`)
+        .send(updated)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
           done();
         });
       });

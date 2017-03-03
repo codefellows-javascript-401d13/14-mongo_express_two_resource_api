@@ -123,13 +123,52 @@ describe('Baseball Routes', function() {
 
       it('should return an updated baseball', done => {
         let updated = { player: 'Hank Aaron' };
-        request.put(`${url}/api/baseball/:id`)
+        request.put(`${url}/api/baseball/${this.tempBaseball._id}`)
         .send(updated)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body.player).to.equal(updated.player);
-          expect(res.body.id).to.equal(this.tempBaseball._id.toString());
+          expect(res.body._id).to.equal(this.tempBaseball._id.toString());
+          expect(res.body.cardId).to.equal(this.tempCard._id.toString());
+          done();
+        });
+      });
+    });
+  });
+
+  describe('DELETE: /api/baseball/:id', function() {
+    describe('with a valid id', function() {
+      before( done => {
+        new Card(sampleCard).save()
+        .then( card => {
+          this.tempCard = card;
+          return Card.findByIdAndAddBaseball(card._id, sampleBaseball);
+        })
+        .then( baseball => {
+          this.tempBaseball = baseball;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempCard) {
+          Card.remove({})
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('should return a removed baseball', done => {
+        request.delete(`${url}/api/baseball/${this.tempBaseball._id}`)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.player).to.equal(this.tempBaseball.player);
+          done();
         });
       });
     });

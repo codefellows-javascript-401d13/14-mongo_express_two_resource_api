@@ -18,9 +18,20 @@ baseballRouter.post('/api/card/:cardId/baseball', jsonParser, function(req, res,
 });
 
 baseballRouter.get('/api/baseball/:id', function(req, res, next) {
-  debug('GET: /api/card/:id');
+  debug('GET: /api/baseball/:id');
 
   Baseball.findById(req.params.id)
   .then( baseball => res.json(baseball))
   .catch(err => next(createError(404, err.message)));
+});
+
+baseballRouter.put('/api/baseball/:id', jsonParser, function(req, res, next) {
+  debug('PUT: /api/baseball/:id');
+
+  Baseball.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  .then( baseball => res.json(baseball))
+  .catch(err => {
+    if (err.name === 'ValidationError') return next(err);
+    next(createError(404, err.message));
+  });
 });

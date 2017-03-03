@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "DEBUG='videogame*' ./node_modules/mocha/bin/mocha",
-    "start": "DEBUG='videogame*' node server.js"
+    "test": "DEBUG='platform*' ./node_modules/mocha/bin/mocha",
+    "start": "DEBUG='platform*' node server.js"
   },
   "repository": {
     "type": "git",

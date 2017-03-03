@@ -31,3 +31,21 @@ playaRouter.put('/api/playa/:id', jsonParser, function(req, res, next) {
   .then( playa => res.json(playa))
   .catch(next);
 });
+
+playaRouter.delete('/api/playa/:id', function(req, res, next) {
+  debug('DELETE: /api/playa/:id');
+
+  let deletedPlayaSquadID = '';
+
+  Playa.findByIdAndRemove(req.params.id)
+  .then( playa => {
+    deletedPlayaSquadID = playa.squadID.toString();
+    return Squad.findById(deletedPlayaSquadID);
+  })
+  .then( squad => {
+    squad.playas.splice(squad.playas.indexOf(deletedPlayaSquadID),1);
+    console.log('playa array after:', squad.playas);
+    res.sendStatus(204);
+  })
+  .catch(next);
+});

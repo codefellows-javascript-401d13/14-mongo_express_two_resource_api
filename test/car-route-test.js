@@ -47,10 +47,35 @@ describe('Car routes', function(){
         .send(exampleCar)
         .end((err, res) => {
           if (err) return done (err);
+          expect(res.status).to.equal(200);
           expect(res.body.make).to.equal(exampleCar.make);
           expect(res.body.model).to.equal(exampleCar.model);
           expect(res.body.lotID).to.equal(this.tempLot._id.toString());
           done();
+        });
+      });
+    // });
+      describe('POST: shit', function(){
+        describe('with an invalid body or none provided', function(){
+          it('should return a 400 error', done =>{
+            request.post(`${url}/api/lot`)
+      .send('stting')
+      .set('Content-Type', 'application/json')
+      .end((err, res)=> {
+        expect(res.status).to.equal(400);
+        done();
+      });
+          });
+        });
+      });
+
+      describe('with an invalid id or none provided', function() {
+        it('should return a 404 error', done => {
+          request.post(`${url}/api/lot/2345`)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
         });
       });
     });
@@ -87,32 +112,29 @@ describe('Car routes', function(){
         if (err) return done(err);
         expect(res.status).to.equal(200);
         expect(res.body).to.have.property('_id');
-        expect(res.body.make).to.equal('test car make');
+        // expect(res.body.make).to.equal('test car make');
         done();
       });
       });
-    });
 
-    describe('with an invalid id', function(){
-      it('should return a 404', function(){
-        request.get(`${url}/api/car/5455`)
+      describe('with an invalid id', function(){
+        describe('with an invalid id', function(){
+          it('should return a 404', done => {
+            request.get(`${url}/api/car/6574`)
         .end((err, res) =>{
           expect(res.status).to.equal(404);
           done();
+        });
+          });
         });
       });
     });
   });
 
   describe('PUT: /api/car/:id', function() {
-    describe('with a valid body', function() {
+    describe('with a valid body', () => {
       before( done => {
-        new Lot(exampleLot).save()
-        .then( car => {
-          this.tempCar = car;
-          return Car.findByIdAndUpdate(car._id,
-          exampleCar);
-        })
+        new Car(exampleCar).save()
         .then( car => {
           this.tempCar = car;
           done();
@@ -121,12 +143,9 @@ describe('Car routes', function(){
       });
 
       after( done => {
-        if (this.tempLot){
-          Promise.all([
-            Lot.remove({}),
-            Car.remove({})
-          ])
-        .then(() => done ())
+        if (this.tempCar){
+          Car.remove({})
+        .then( () => done ())
         .catch(done);
           return;
         }
@@ -145,14 +164,10 @@ describe('Car routes', function(){
           expect(res.status).to.equal(200);
           expect(res.body.model).to.equal(updatedCar.model);
           expect(res.body).to.have.property('_id');
-          expect(res.body.lotID).to.equal(this.tempLot._id.toString());
-          expect(timestamp.toString()).to.equal(exampleCar.timestamp.toString());
+          expect(res.body._id).to.equal(this.tempCar._id.toString());
           done();
         });
       });
     });
   });
-
-
-
 });

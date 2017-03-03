@@ -45,13 +45,36 @@ describe('Lot Routes', function(){
           done();
         });
       });
-    });
-  });
 
-  describe('GET: /api/lot/:id', function(){
-    describe('with valid body', function(){
-      before( done => {
-        new Lot(exampleLot).save()
+
+      describe('with an invalid id or none provided', function() {
+        it('should return a 404 error', done => {
+          request.post(`${url}/api/lot/2345`)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+        });
+      });
+
+      describe('with an invalid body or none provided', function() {
+        it('should return a 400 error', done => {
+          request.post(`${url}/api/lot`)
+      .send('tdd makes me angry')
+      .set('Content-Type', 'application/json')
+      .end((err, res) => {
+        // expect(res.body.name).to.equal('examp');
+        expect(res.status).to.equal(400);
+        done();
+      });
+        });
+      });
+    });
+
+    describe('GET: /api/lot/:id', function(){
+      describe('with valid body', function(){
+        before( done => {
+          new Lot(exampleLot).save()
         .then( lot => {
           this.tempLot = lot;
           return Lot.findByIdAndAddCar(lot._id, exampleCar);
@@ -61,20 +84,20 @@ describe('Lot Routes', function(){
           done();
         })
         .catch(done);
-      });
+        });
 
-      after( done => {
-        if (this.tempLot) {
-          Lot.remove({})
+        after( done => {
+          if (this.tempLot) {
+            Lot.remove({})
         .then( () => done())
         .catch(done);
-          return;
-        }
-        done();
-      });
+            return;
+          }
+          done();
+        });
 
-      it('should return a lot', done => {
-        request.get( `${url}/api/lot/${this.tempLot._id}`)
+        it('should return a lot', done => {
+          request.get( `${url}/api/lot/${this.tempLot._id}`)
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).to.equal(200);
@@ -83,36 +106,36 @@ describe('Lot Routes', function(){
         expect(res.body.cars[0].make).to.equal(exampleCar.make);
         done();
       });
+        });
       });
     });
-  });
 
 
-  describe('PUT: /api/lot/:id', function() {
-    describe('with a valid body', function() {
-      before( done => {
-        new Lot(exampleLot).save()
+    describe('PUT: /api/lot/:id', function() {
+      describe('with a valid body', function() {
+        before( done => {
+          new Lot(exampleLot).save()
         .then( lot => {
           this.tempLot = lot;
           done();
         })
         .catch(done);
-      });
+        });
 
-      after( done => {
-        if (this.tempLot) {
-          Lot.remove({})
+        after( done => {
+          if (this.tempLot) {
+            Lot.remove({})
           .then( () => done())
           .catch(done);
-          return;
-        }
-        done();
-      });
+            return;
+          }
+          done();
+        });
 
-      it('should return a lot', done => {
-        var updated = { name: 'updated name' };
+        it('should return a lot', done => {
+          var updated = { name: 'updated name' };
 
-        request.put(`${url}/api/lot/${this.tempLot._id}`)
+          request.put(`${url}/api/lot/${this.tempLot._id}`)
         .send(updated)
         .end((err, res) => {
           if (err) return done(err);
@@ -121,6 +144,7 @@ describe('Lot Routes', function(){
           expect(res.body.name).to.equal(updated.name);
           expect(timestamp.toString()).to.equal(exampleLot.timestamp.toString());
           done();
+        });
         });
       });
     });

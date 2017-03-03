@@ -8,7 +8,6 @@ const Lot = require('../model/lot.js');
 const lotRouter = module.exports = new Router();
 
 lotRouter.post('/api/lot', jsonParser, function(req, res, next) {
-  
   req.body.timestamp = new Date();
   new Lot(req.body).save()
   .then( lot => res.json(lot))

@@ -11,7 +11,7 @@ carRouter.post('/api/lot/:lotID/car', jsonParser, function(req, res, next) {
 
   Lot.findByIdAndAddCar(req.params.lotID, req.body)
   .then( car => res.json(car))
-  .catch(next);
+  .catch( err => next(createError(404, err.message)));
 });
 
 carRouter.get('/api/car/:id', function(req, res, next){

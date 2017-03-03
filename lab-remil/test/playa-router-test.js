@@ -103,6 +103,42 @@ describe('Playa Rizzoutes', function() {
         });
       });
     });
+
+    describe('with dat bad id', function() {
+      before( done => {
+        new Squad(bsquad).save()
+        .then( squad => {
+          this.tempSquad = squad;
+          return Squad.findByIdAndAddPlaya(squad._id, bplaya);
+        })
+        .then( playa => {
+          this.tempPlaya = playa;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempSquad) {
+          Promise.all([
+            Squad.remove({}),
+            Playa.remove({}),
+          ])
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('betta return a 404', done => {
+        request.get(`${url}/api/playa/badID`)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
   });
 
   describe('runnin\' a PUT route @ /api/playa/:id', function() {

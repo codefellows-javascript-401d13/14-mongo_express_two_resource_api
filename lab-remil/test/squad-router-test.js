@@ -46,6 +46,27 @@ describe('Squad Rizzoutes', function() {
         });
       });
     });
+
+    describe('with dat bad body', function() {
+      after( done => {
+        if (this.tempSquad) {
+          Squad.remove({})
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('betta return a 400', done => {
+        request.post(`${url}/api/squad`)
+        .send('bad body')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
   });
 
   describe('runnin\' a GET route @ /api/squad/:id', function() {

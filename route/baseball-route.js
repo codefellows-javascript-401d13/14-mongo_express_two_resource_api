@@ -30,7 +30,18 @@ baseballRouter.put('/api/baseball/:id', jsonParser, function(req, res, next) {
 
   Baseball.findByIdAndUpdate(req.params.id, req.body, { new: true })
   .then( baseball => res.json(baseball))
-  .catch(err => {
+  .catch( err => {
+    if (err.name === 'ValidationError') return next(err);
+    next(createError(404, err.message));
+  });
+});
+
+baseballRouter.delete('/api/baseball/:id', function(req, res, next) {
+  debug('DELETE: /api/baseball/:id');
+
+  Baseball.findByIdAndRemove(req.params.id)
+  .then( baseball => res.json(baseball))
+  .catch( err => {
     if (err.name === 'ValidationError') return next(err);
     next(createError(404, err.message));
   });

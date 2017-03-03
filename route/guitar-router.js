@@ -36,7 +36,7 @@ guitarRouter.put('/api/quiver/:quiverID/guitar/:guitarID', jsonParser, function(
 
   try {
     Guitar.findByIdAndUpdate(req.params.guitarID, req.params.body, {new: true})
-    .then( guitar => res.json(guitar))
+    .then( guitar =>  res.json(guitar))
     .catch( () => next(createError(404, 'not found')));
   } catch (err) {
     next(createError(400, err.message));

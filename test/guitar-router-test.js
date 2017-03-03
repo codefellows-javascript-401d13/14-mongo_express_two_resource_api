@@ -115,14 +115,14 @@ describe('Guitar Routes', function() {
         done();
       });
       it('should return an updated guitar', done => {
-        let updatedGuitar = { name: 'les paul', type: 'electric', make: 'gibson'};
+        let updateGuitar = { name: 'les paul', make: 'gibson'};
         request.put(`${url}/api/quiver/${this.tempQuiver._id}/guitar/${this.tempGuitar._id}`)
-        .send(updatedGuitar)
+        .send(updateGuitar)
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
-          expect(res.body.name).to.equal(updatedGuitar.name);
-          expect(res.body.make).to.equal(updatedGuitar.make);
+          expect(res.body.name).to.equal(updateGuitar.name);
+          expect(res.body.make).to.equal(updateGuitar.make);
           done();
         });
       });

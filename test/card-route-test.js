@@ -175,6 +175,8 @@ describe('Card Routes', function() {
           request.put(`${url}/api/card/${this.tempCard._id}`)
           .send(invalid)
           .end((err, res) => {
+            expect(err.status).to.equal(400);
+            expect(res.status).to.equal(400);
             done();
           });
         });

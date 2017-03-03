@@ -35,7 +35,13 @@ cardRouter.put('/api/card/:id', jsonParser, function(req, res, next) {
   debug('PUT /api/card/:id');
 
   Card.findByIdAndUpdate(req.params.id, req.body, { new: true })
-  .then( card => res.json(card))
+  .then( card => {
+    let reqKeys = Object.keys(req.body);
+    if (!card[reqKeys[0]]) {
+      return next(createError(400, 'Bad Request'));
+    }
+    res.json(card);
+  })
   .catch( err => {
     if (err.name === 'ValidationError') return next(err);
     next(createError(404, err.message));

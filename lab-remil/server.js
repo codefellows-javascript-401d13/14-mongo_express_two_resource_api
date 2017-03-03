@@ -13,11 +13,11 @@ const playaRouter = require('./route/playa-router.js');
 
 mongoose.Promise = Promise;
 const app = require('express')();
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/streetzdbdev';
 const PORT = process.env.PORT || 3000;
 
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/streetzdbdev';
 mongoose.connect(MONGODB_URI);
+
 
 app.use(cors());
 app.use(morgan('dev'));

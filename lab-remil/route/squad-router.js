@@ -14,3 +14,12 @@ squadRouter.post('/api/squad', jsonParser, function(req, res, next) {
   .then( squad => res.json(squad))
   .catch(next);
 });
+
+squadRouter.get('/api/squad/:id', function(req, res, next) {
+  debug('GET: /api/squad');
+
+  Squad.findById(req.params.id)
+  .populate('playas')
+  .then( squad => res.json(squad))
+  .catch(next);
+});

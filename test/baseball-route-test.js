@@ -57,4 +57,81 @@ describe('Baseball Routes', function() {
       });
     });
   });
+
+  describe('GET: /api/baseball/:id', function() {
+    describe('with a valid id', function() {
+      before( done => {
+        new Card(sampleCard).save()
+        .then( card => {
+          this.tempCard = card;
+          return Card.findByIdAndAddBaseball(card._id, sampleBaseball);
+        })
+        .then( baseball => {
+          this.tempBaseball = baseball;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempCard) {
+          Card.remove({})
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('should return a note', done => {
+        request.get(`${url}/api/baseball/${this.tempBaseball._id}`)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.year).to.equal(sampleBaseball.year);
+          expect(res.body.cardId).to.equal(this.tempCard._id.toString());
+          done();
+        });
+      });
+    });
+  });
+
+  describe('PUT: /api/baseball/:id', function() {
+    describe('with a valid id', function() {
+      before( done => {
+        new Card(sampleCard).save()
+        .then( card => {
+          this.tempCard = card;
+          return Card.findByIdAndAddBaseball(card._id, sampleBaseball);
+        })
+        .then( baseball => {
+          this.tempBaseball = baseball;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempCard) {
+          Card.remove({})
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('should return an updated baseball', done => {
+        let updated = { player: 'Hank Aaron' };
+        request.put(`${url}/api/baseball/:id`)
+        .send(updated)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.player).to.equal(updated.player);
+          expect(res.body.id).to.equal(this.tempBaseball._id.toString());
+        });
+      });
+    });
+  });
 });

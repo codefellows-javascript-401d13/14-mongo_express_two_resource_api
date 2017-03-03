@@ -126,6 +126,7 @@ describe('Card Routes', function() {
         request.get(`${url}/api/card`)
         .end((err, res) => {
           expect(err.status).to.equal(400);
+          expect(res.status).to.equal(err.status);
           done();
         });
       });
@@ -165,6 +166,17 @@ describe('Card Routes', function() {
           expect(res.body.single).to.be.true;
           expect(res.body._id).to.equal(this.tempCard._id.toString());
           done();
+        });
+      });
+
+      describe('with an invalid body', () => {
+        it('should return a 400 error', done => {
+          let invalid = { blue: 'bike' };
+          request.put(`${url}/api/card/${this.tempCard._id}`)
+          .send(invalid)
+          .end((err, res) => {
+            done();
+          });
         });
       });
     });

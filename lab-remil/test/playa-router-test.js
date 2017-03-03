@@ -60,6 +60,39 @@ describe('Playa Rizzoutes', function() {
         });
       });
     });
+
+    describe('with dat bad body', function() {
+      before( done => {
+        new Squad(bsquad).save()
+        .then( squad => {
+          this.tempSquad = squad;
+          done();
+        })
+        .catch(done);
+      });
+
+      after( done => {
+        if (this.tempSquad) {
+          Promise.all([
+            Squad.remove({}),
+            Playa.remove({}),
+          ])
+          .then( () => done())
+          .catch(done);
+          return;
+        }
+        done();
+      });
+
+      it('betta return a 400', done => {
+        request.post(`${url}/api/squad/${this.tempSquad._id}/playa`)
+        .send('bad body')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
   });
 
   describe('runnin\' a GET route @ /api/playa/:id', function() {

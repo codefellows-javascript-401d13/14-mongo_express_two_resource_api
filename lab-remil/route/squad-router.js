@@ -23,3 +23,11 @@ squadRouter.get('/api/squad/:id', function(req, res, next) {
   .then( squad => res.json(squad))
   .catch(next);
 });
+
+squadRouter.put('/api/squad/:id', jsonParser, function(req, res, next) {
+  debug('PUT: /api/squad');
+
+  Squad.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  .then( squad => res.json(squad))
+  .catch(next);
+});

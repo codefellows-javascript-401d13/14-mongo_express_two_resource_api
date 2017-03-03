@@ -1,0 +1,30 @@
+{
+  "name": "lab-remil",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "DEBUG='streetz*' mocha",
+    "start": "DEBUG='streetz*' node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.17.0",
+    "cors": "^2.8.1",
+    "express": "^4.15.0",
+    "http-errors": "^1.6.1",
+    "mongoose": "^4.8.5",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "superagent": "^3.5.0"
+  }
+}

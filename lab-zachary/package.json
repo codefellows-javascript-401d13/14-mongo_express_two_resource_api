@@ -1,0 +1,32 @@
+{
+  "name": "lab-zachary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.1",
+    "cors": "^2.8.1",
+    "debug": "^2.6.1",
+    "express": "^4.14.1",
+    "http-errors": "^1.6.1",
+    "mkdirp": "^0.5.1",
+    "mongoose": "^4.8.5",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^4.0.1",
+    "mocha": "^3.2.0",
+    "superagent": "^3.5.0"
+  },
+  "scripts": {
+    "test": "DEBUG='bike*' mocha",
+    "start": "DEBUG='bike*' nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

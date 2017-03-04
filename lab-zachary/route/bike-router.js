@@ -61,8 +61,7 @@ bikeRouter.delete('/api/quiver/:quiverID/bike/:bikeID', (req, res, next) => {
     return Quiver.findByIdAndUpdate(req.params.quiverID, tempQuiver, {new:true});
   })
   .then( quiver => {
-      console.log('------------------------',quiver);
-  if(!quiver) return next(createError(500, 'Quiver not updated'));
+    if(!quiver) return next(createError(500, 'Quiver not updated'));
     res.sendStatus(204);
   })
   .catch(err => {

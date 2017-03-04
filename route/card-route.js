@@ -40,9 +40,11 @@ cardRouter.put('/api/card/:id', jsonParser, function(req, res, next) {
     if (!card[reqKeys[0]]) {
       return next(createError(400, 'Bad Request'));
     }
+    console.log('card:', card);
     res.json(card);
   })
   .catch( err => {
+    console.error(err);
     if (err.name === 'ValidationError') return next(err);
     next(createError(404, err.message));
   });

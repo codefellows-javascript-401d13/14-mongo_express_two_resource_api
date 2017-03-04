@@ -181,6 +181,21 @@ describe('Card Routes', function() {
           });
         });
       });
+
+      describe('with an invalid id', () => {
+        it('should return a 404 error', done => {
+          let wrongID = '111222333444555666777888';
+          let updated = { brand: 'Donruss' };
+
+          request.put(`${url}/api/card/${wrongID}`)
+          .send(updated)
+          .end((err, res) => {
+            expect(err.status).to.equal(404);
+            expect(res.status).to.equal(err.status);
+            done();
+          });
+        });
+      });
     });
   });
 

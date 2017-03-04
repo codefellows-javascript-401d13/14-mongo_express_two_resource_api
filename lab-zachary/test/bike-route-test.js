@@ -181,5 +181,106 @@ describe('Bike route tests', function() {
       });
     });
   });
-});
+  describe('DELETE bike routes', function() {
+    before( done => {
+      new Quiver(exampleQuiver).save()
+      .then( quiver => {
+        this.tempQuiver = quiver;
+        return Quiver.findByIdAndAddBike(this.tempQuiver._id, exampleBike);
+      })
+      .then( bike => {
+        this.tempBike = bike;
 
+        done();
+      })
+      .catch(done);
+    });
+    after( done => {
+      Promise.all([
+        Quiver.remove({}),
+        Bike.remove({}),
+      ])
+      .then(() => done())
+      .catch(done);
+    });
+    describe('DELETE /api/bike/:bikeID', () => {
+      describe('with a valid Bike id', () => {
+        it('should return a 204 if Bike is removed and Quiver is updated', done => {
+          request.delete(`${url}/api/bike/${this.tempBike._id}`)
+          .end((err, res) => {
+            if(err) return done(err);
+            expect(res.status).to.equal(204);
+            done();
+          });
+        });
+      });
+
+      describe('with invalid Bike id', () => {
+        it('should return a 404', done => {
+          request.put(`${url}/api/bike/badID`)
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            expect(err.message).to.equal('Not Found');
+            done();
+          });
+        });
+      });
+    });
+  });
+  describe('2nd DELETE bike routes', function() {
+    before( done => {
+      new Quiver(exampleQuiver).save()
+      .then( quiver => {
+        this.tempQuiver = quiver;
+        return Quiver.findByIdAndAddBike(this.tempQuiver._id, exampleBike);
+      })
+      .then( bike => {
+        this.tempBike = bike;
+
+        done();
+      })
+      .catch(done);
+    });
+    after( done => {
+      Promise.all([
+        Quiver.remove({}),
+        Bike.remove({}),
+      ])
+      .then(() => done())
+      .catch(done);
+    });
+    describe('DELETE /api/quiver/:quiverID/bike/:bikeID', () => {
+      describe('with a valid Bike id', () => {
+        it('should return a 204 if Bike is removed and Quiver is updated', done => {
+          request.delete(`${url}/api/quiver/${this.tempQuiver._id}/bike/${this.tempBike._id}`)
+          .end((err, res) => {
+            if(err) return done(err);
+            expect(res.status).to.equal(204);
+            done();
+          });
+        });
+      });
+
+      describe('with invalid Bike id', () => {
+        it('should return a 404', done => {
+          request.put(`${url}/api/bike/badID`)
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            expect(err.message).to.equal('Not Found');
+            done();
+          });
+        });
+      });
+      describe('with invalid quiver id', () => {
+        it('should return a 400', done => {
+          request.put(`${url}/api/quiver/badID/bike/${this.tempBike._id}`)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            expect(err.message).to.equal('Bad Request');
+            done();
+          });
+        });
+      });
+    });
+  });
+});

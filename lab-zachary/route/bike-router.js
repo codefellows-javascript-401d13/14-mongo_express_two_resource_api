@@ -46,22 +46,54 @@ bikeRouter.put('/api/quiver/:quiverID/bike/:bikeID', jsonParser, (req, res, next
 });
 
 bikeRouter.delete('/api/quiver/:quiverID/bike/:bikeID', (req, res, next) => {
-  debug('bikeRouter DELETE');
+  debug('DELETE /api/quiver/:quiverID/bike/:bikeID');
   Bike.findByIdAndRemove(req.params.bikeID)
   .then( bike => {
     if(!bike) return next(createError(404, 'ID not found'));
     return Quiver.findById(req.params.quiverID);
   })
   .then( quiver => {
+    console.log('------------------------',quiver);
+    if(!quiver) return next(createError(404, 'Bike Quiver not found'));
     let tempQuiver = quiver;
     let bikeIndex = tempQuiver.bikes.indexOf(req.params.bikeID);
     tempQuiver.bikes.splice(bikeIndex, 1);
     return Quiver.findByIdAndUpdate(req.params.quiverID, tempQuiver, {new:true});
   })
   .then( quiver => {
-    res.json(quiver);
+      console.log('------------------------',quiver);
+  if(!quiver) return next(createError(500, 'Quiver not updated'));
+    res.sendStatus(204);
   })
   .catch(err => {
     if(err.kind === 'ObjectId' && err.name === 'CastError') return next(createError(404, 'ID not found'));
   });
 });
+
+bikeRouter.delete('/api/bike/:bikeID', (req, res, next) => {
+  debug('DELETE /api/bike/:bikeID scratch method');
+  Bike.findByIdAndRemove(req.params.bikeID)
+  .then( bike => {
+    if(!bike) return next(createError(404, 'ID not found'));
+    return Quiver.findById(bike.quiverID);
+  })
+  .then( quiver => {
+    if(!quiver) return next(createError(404, 'Bike Quiver not found'));
+    let tempQuiver = quiver;
+    let bikeIndex = tempQuiver.bikes.indexOf(req.params.bikeID);
+    tempQuiver.bikes.splice(bikeIndex, 1);
+    return Quiver.findByIdAndUpdate(quiver._id, tempQuiver, {new:true});
+  })
+  .then( quiver => {
+    if(!quiver) return next(createError(500, 'Quiver not updated'));
+    res.sendStatus(204);
+  })
+  .catch(err => {
+    if(err.kind === 'ObjectId' && err.name === 'CastError') return next(createError(404, 'ID not found'));
+  });
+});
+
+
+
+
+

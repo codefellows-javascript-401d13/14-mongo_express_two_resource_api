@@ -54,17 +54,17 @@ describe('Car routes', function(){
           done();
         });
       });
-    // });
+      // });
       describe('POST: shit', function(){
         describe('with an invalid body or none provided', function(){
           it('should return a 400 error', done =>{
             request.post(`${url}/api/lot`)
-      .send('stting')
-      .set('Content-Type', 'application/json')
-      .end((err, res)=> {
-        expect(res.status).to.equal(400);
-        done();
-      });
+            .send('stting')
+            .set('Content-Type', 'application/json')
+            .end((err, res)=> {
+              expect(res.status).to.equal(400);
+              done();
+            });
           });
         });
       });
@@ -72,10 +72,10 @@ describe('Car routes', function(){
       describe('with an invalid id or none provided', function() {
         it('should return a 404 error', done => {
           request.post(`${url}/api/lot/2345`)
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        done();
-      });
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            done();
+          });
         });
       });
     });
@@ -108,23 +108,23 @@ describe('Car routes', function(){
 
       it('should return a car', done => {
         request.get( `${url}/api/car/${this.tempCar._id}`)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).to.equal(200);
-        expect(res.body).to.have.property('_id');
-        // expect(res.body.make).to.equal('test car make');
-        done();
-      });
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body).to.have.property('_id');
+          // expect(res.body.make).to.equal('test car make');
+          done();
+        });
       });
 
       describe('with an invalid id', function(){
         describe('with an invalid id', function(){
           it('should return a 404', done => {
             request.get(`${url}/api/car/6574`)
-        .end((err, res) =>{
-          expect(res.status).to.equal(404);
-          done();
-        });
+            .end((err, res) =>{
+              expect(res.status).to.equal(404);
+              done();
+            });
           });
         });
       });
@@ -145,8 +145,8 @@ describe('Car routes', function(){
       after( done => {
         if (this.tempCar){
           Car.remove({})
-        .then( () => done ())
-        .catch(done);
+          .then( () => done ())
+          .catch(done);
           return;
         }
         done();
@@ -171,3 +171,4 @@ describe('Car routes', function(){
     });
   });
 });
+  

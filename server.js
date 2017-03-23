@@ -9,7 +9,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const userRouter = require('./route/user-route.js');
-const artistRouter = require('./route/artist-route.js');
+const venueRouter = require('./route/venue-route.js');
 const errors = require('./lib/error-middleware.js');
 
 dotenv.load();
@@ -25,7 +25,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use(userRouter);
-app.use(artistRouter);
+app.use(venueRouter);
 app.use(errors);
 
 app.get('/', (req, res) => {

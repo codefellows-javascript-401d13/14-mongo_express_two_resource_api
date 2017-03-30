@@ -11,6 +11,7 @@ const morgan = require('morgan');
 const userRouter = require('./route/user-route.js');
 const venueRouter = require('./route/venue-route.js');
 const artistRouter = require('./route/artist-route.js');
+const picRouter = require('./route/pic-route.js');
 const errors = require('./lib/error-middleware.js');
 
 dotenv.load();
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 
 app.use(userRouter);
 app.use(venueRouter);
+app.use(picRouter);
 app.use(artistRouter);
 app.use(errors);
 
